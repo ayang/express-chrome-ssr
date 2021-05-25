@@ -26,14 +26,12 @@ var skippedResources = ['quantserve', 'adzerk', 'doubleclick', 'adition', 'exela
  *     a new browser instance is launched.
  */
 
-function ssr(_x, _x2) {
+function ssr(_x, _x2, _x3) {
   return _ssr.apply(this, arguments);
 }
 
 function _ssr() {
-  _ssr = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(url, browserWSEndpoint) {
+  _ssr = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(url, browserWSEndpoint, screenSize) {
     var browser, page, response, html, _html;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
@@ -57,6 +55,19 @@ function _ssr() {
             return page.setRequestInterception(true);
 
           case 9:
+            if (!screenSize) {
+              _context.next = 12;
+              break;
+            }
+
+            _context.next = 12;
+            return page.setViewport({
+              width: screenSize.width,
+              height: screenSize.height,
+              deviceScaleFactor: 1
+            });
+
+          case 12:
             page.on('request', function (request) {
               var requestUrl = request._url.split('?')[0].split('#')[0];
 
@@ -68,15 +79,15 @@ function _ssr() {
                 request["continue"]();
               }
             });
-            _context.next = 12;
+            _context.next = 15;
             return page["goto"](url, {
               timeout: 25000,
-              waitUntil: 'networkidle2'
+              waitUntil: 'networkidle0'
             });
 
-          case 12:
+          case 15:
             response = _context.sent;
-            _context.next = 15;
+            _context.next = 18;
             return page.evaluate(function (url) {
               var base = document.createElement('base');
               base.href = url; // Add to top of head, before all other resources.
@@ -84,8 +95,8 @@ function _ssr() {
               document.head.prepend(base);
             }, url);
 
-          case 15:
-            _context.next = 17;
+          case 18:
+            _context.next = 20;
             return page.evaluate(function () {
               var elements = document.querySelectorAll('script, link[rel="import"]');
               elements.forEach(function (e) {
@@ -93,23 +104,23 @@ function _ssr() {
               });
             });
 
-          case 17:
-            _context.next = 19;
+          case 20:
+            _context.next = 22;
             return page.content();
 
-          case 19:
+          case 22:
             html = _context.sent;
-            _context.next = 22;
+            _context.next = 25;
             return page.close();
 
-          case 22:
+          case 25:
             return _context.abrupt("return", {
               html: html,
               status: response.status()
             });
 
-          case 25:
-            _context.prev = 25;
+          case 28:
+            _context.prev = 28;
             _context.t0 = _context["catch"](3);
             _html = _context.t0.toString();
             console.warn({
@@ -120,12 +131,12 @@ function _ssr() {
               status: 500
             });
 
-          case 30:
+          case 33:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 25]]);
+    }, _callee, null, [[3, 28]]);
   }));
   return _ssr.apply(this, arguments);
 }

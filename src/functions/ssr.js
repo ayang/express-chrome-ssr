@@ -43,18 +43,20 @@ const skippedResources = [
  *     provided, Puppeteer's reconnects to the browser instance. Otherwise,
  *     a new browser instance is launched.
  */
-export async function ssr(url, browserWSEndpoint) {
+export async function ssr(url, browserWSEndpoint, screenSize) {
 
 	const browser = await puppeteer.connect({ browserWSEndpoint });
 
 	try {
 		const page = await browser.newPage();
 		await page.setRequestInterception(true);
-		await page.setViewport({
-		    width: 1920,
-		    height: 1080,
-		    deviceScaleFactor: 1,
-		});
+		if (screenSize) {
+			await page.setViewport({
+				width: screenSize.width,
+				height: screenSize.height,
+				deviceScaleFactor: 1,
+			});
+		}
 
 		page.on('request', request => {
 			const requestUrl = request._url.split('?')[0].split('#')[0];

@@ -33,19 +33,15 @@ app.use(function (req, res, next) {
 });
 app.get('/test', _test.test);
 var browserWSEndpoint = null;
-app.get('/ssr',
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(req, res, next) {
-    var url, browser, _ref2, html, status;
+app.get('/ssr', /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
+    var _req$query, url, _req$query$width, width, _req$query$height, height, browser, screenSize, _yield$ssr, html, status;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            url = req.query.url;
+            _req$query = req.query, url = _req$query.url, _req$query$width = _req$query.width, width = _req$query$width === void 0 ? 720 : _req$query$width, _req$query$height = _req$query.height, height = _req$query$height === void 0 ? 1280 : _req$query$height;
 
             if (url) {
               _context.next = 3;
@@ -72,16 +68,20 @@ function () {
             browserWSEndpoint = _context.sent;
 
           case 10:
-            _context.next = 12;
-            return (0, _ssr.ssr)(url, browserWSEndpoint);
+            screenSize = {
+              width: width,
+              height: height
+            };
+            _context.next = 13;
+            return (0, _ssr.ssr)(url, browserWSEndpoint, screenSize);
 
-          case 12:
-            _ref2 = _context.sent;
-            html = _ref2.html;
-            status = _ref2.status;
+          case 13:
+            _yield$ssr = _context.sent;
+            html = _yield$ssr.html;
+            status = _yield$ssr.status;
             return _context.abrupt("return", res.status(status).send(html));
 
-          case 16:
+          case 17:
           case "end":
             return _context.stop();
         }
