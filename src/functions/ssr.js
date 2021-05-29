@@ -50,7 +50,7 @@ export async function ssr(url, browserWSEndpoint, screenSize) {
 	try {
 		const page = await browser.newPage();
 		await page.setRequestInterception(true);
-		await page.setUserAgent('Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)')
+		await page.setUserAgent('Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) +Prerender')
 		if (screenSize) {
 			await page.setViewport({
 				width: screenSize.width,
