@@ -104,7 +104,7 @@ export async function ssr(url, browserWSEndpoint, screenSize) {
 		return { html, status: 500 }
 	}
 	finally {
-		await browser.close();
+		browser.close();
 	}
 
 };

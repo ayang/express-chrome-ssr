@@ -41,7 +41,7 @@ app.get('/ssr', /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$query = req.query, url = _req$query.url, _req$query$width = _req$query.width, width = _req$query$width === void 0 ? 720 : _req$query$width, _req$query$height = _req$query.height, height = _req$query$height === void 0 ? 1280 : _req$query$height;
+            _req$query = req.query, url = _req$query.url, _req$query$width = _req$query.width, width = _req$query$width === void 0 ? 540 : _req$query$width, _req$query$height = _req$query.height, height = _req$query$height === void 0 ? 960 : _req$query$height;
 
             if (url) {
               _context.next = 3;

@@ -55,19 +55,23 @@ function _ssr() {
             return page.setRequestInterception(true);
 
           case 9:
+            _context.next = 11;
+            return page.setUserAgent('Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+
+          case 11:
             if (!screenSize) {
-              _context.next = 12;
+              _context.next = 14;
               break;
             }
 
-            _context.next = 12;
+            _context.next = 14;
             return page.setViewport({
               width: screenSize.width,
               height: screenSize.height,
               deviceScaleFactor: 1
             });
 
-          case 12:
+          case 14:
             page.on('request', function (request) {
               var requestUrl = request._url.split('?')[0].split('#')[0];
 
@@ -79,21 +83,21 @@ function _ssr() {
                 request["continue"]();
               }
             });
-            _context.next = 15;
+            _context.next = 17;
             return page["goto"](url, {
               timeout: 25000,
               waitUntil: 'networkidle0'
             });
 
-          case 15:
+          case 17:
             response = _context.sent;
-            _context.next = 18;
+            _context.next = 20;
             return new Promise(function (resolve, reject) {
               return setTimeout(resolve, 1000);
             });
 
-          case 18:
-            _context.next = 20;
+          case 20:
+            _context.next = 22;
             return page.evaluate(function (url) {
               var base = document.createElement('base');
               base.href = url; // Add to top of head, before all other resources.
@@ -101,8 +105,8 @@ function _ssr() {
               document.head.prepend(base);
             }, url);
 
-          case 20:
-            _context.next = 22;
+          case 22:
+            _context.next = 24;
             return page.evaluate(function () {
               var elements = document.querySelectorAll('script, link[rel="import"]');
               elements.forEach(function (e) {
@@ -110,23 +114,23 @@ function _ssr() {
               });
             });
 
-          case 22:
-            _context.next = 24;
+          case 24:
+            _context.next = 26;
             return page.content();
 
-          case 24:
+          case 26:
             html = _context.sent;
-            _context.next = 27;
+            _context.next = 29;
             return page.close();
 
-          case 27:
+          case 29:
             return _context.abrupt("return", {
               html: html,
               status: response.status()
             });
 
-          case 30:
-            _context.prev = 30;
+          case 32:
+            _context.prev = 32;
             _context.t0 = _context["catch"](3);
             _html = _context.t0.toString();
             console.warn({
@@ -137,12 +141,17 @@ function _ssr() {
               status: 500
             });
 
-          case 35:
+          case 37:
+            _context.prev = 37;
+            browser.close();
+            return _context.finish(37);
+
+          case 40:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 30]]);
+    }, _callee, null, [[3, 32, 37, 40]]);
   }));
   return _ssr.apply(this, arguments);
 }
