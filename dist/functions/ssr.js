@@ -83,21 +83,22 @@ function _ssr() {
                 request["continue"]();
               }
             });
-            _context.next = 17;
+            _context.prev = 15;
+            _context.next = 18;
             return page["goto"](url, {
               timeout: 25000,
               waitUntil: 'networkidle0'
             });
 
-          case 17:
+          case 18:
             response = _context.sent;
-            _context.next = 20;
+            _context.next = 21;
             return new Promise(function (resolve, reject) {
               return setTimeout(resolve, 1000);
             });
 
-          case 20:
-            _context.next = 22;
+          case 21:
+            _context.next = 23;
             return page.evaluate(function (url) {
               var base = document.createElement('base');
               base.href = url; // Add to top of head, before all other resources.
@@ -105,8 +106,8 @@ function _ssr() {
               document.head.prepend(base);
             }, url);
 
-          case 22:
-            _context.next = 24;
+          case 23:
+            _context.next = 25;
             return page.evaluate(function () {
               var elements = document.querySelectorAll('script, link[rel="import"]');
               elements.forEach(function (e) {
@@ -114,23 +115,31 @@ function _ssr() {
               });
             });
 
-          case 24:
-            _context.next = 26;
+          case 25:
+            _context.next = 27;
             return page.content();
 
-          case 26:
+          case 27:
             html = _context.sent;
-            _context.next = 29;
-            return page.close();
-
-          case 29:
             return _context.abrupt("return", {
               html: html,
               status: response.status()
             });
 
+          case 29:
+            _context.prev = 29;
+            _context.next = 32;
+            return page.close();
+
           case 32:
-            _context.prev = 32;
+            return _context.finish(29);
+
+          case 33:
+            _context.next = 40;
+            break;
+
+          case 35:
+            _context.prev = 35;
             _context.t0 = _context["catch"](3);
             _html = _context.t0.toString();
             console.warn({
@@ -141,17 +150,12 @@ function _ssr() {
               status: 500
             });
 
-          case 37:
-            _context.prev = 37;
-            browser.close();
-            return _context.finish(37);
-
           case 40:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 32, 37, 40]]);
+    }, _callee, null, [[3, 35], [15,, 29, 33]]);
   }));
   return _ssr.apply(this, arguments);
 }
