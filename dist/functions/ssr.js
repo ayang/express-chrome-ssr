@@ -88,6 +88,12 @@ function _ssr() {
           case 15:
             response = _context.sent;
             _context.next = 18;
+            return new Promise(function (resolve, reject) {
+              return setTimeout(resolve, 1000);
+            });
+
+          case 18:
+            _context.next = 20;
             return page.evaluate(function (url) {
               var base = document.createElement('base');
               base.href = url; // Add to top of head, before all other resources.
@@ -95,8 +101,8 @@ function _ssr() {
               document.head.prepend(base);
             }, url);
 
-          case 18:
-            _context.next = 20;
+          case 20:
+            _context.next = 22;
             return page.evaluate(function () {
               var elements = document.querySelectorAll('script, link[rel="import"]');
               elements.forEach(function (e) {
@@ -104,23 +110,23 @@ function _ssr() {
               });
             });
 
-          case 20:
-            _context.next = 22;
+          case 22:
+            _context.next = 24;
             return page.content();
 
-          case 22:
+          case 24:
             html = _context.sent;
-            _context.next = 25;
+            _context.next = 27;
             return page.close();
 
-          case 25:
+          case 27:
             return _context.abrupt("return", {
               html: html,
               status: response.status()
             });
 
-          case 28:
-            _context.prev = 28;
+          case 30:
+            _context.prev = 30;
             _context.t0 = _context["catch"](3);
             _html = _context.t0.toString();
             console.warn({
@@ -131,12 +137,12 @@ function _ssr() {
               status: 500
             });
 
-          case 33:
+          case 35:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 28]]);
+    }, _callee, null, [[3, 30]]);
   }));
   return _ssr.apply(this, arguments);
 }
