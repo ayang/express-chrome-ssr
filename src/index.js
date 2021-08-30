@@ -25,7 +25,7 @@ app.get('/test', test);
 let browserWSEndpoint = null;
 app.get('/ssr', async (req, res, next) => {
 
-	const { url, width=540, height=960 } = req.query;
+	const { url, width=540, height=960, waitms=2000 } = req.query;
 
 	if (!url) {
 		return res.status(400).send('Invalid url param: Example: ?url=https://binge.app');
@@ -41,7 +41,7 @@ app.get('/ssr', async (req, res, next) => {
 
 	const screenSize = { width, height };
 
-	const { html, status } = await ssr(url, browserWSEndpoint, screenSize);
+	const { html, status } = await ssr(url, browserWSEndpoint, {screenSize, waitMs: waitms});
 	// console.timeEnd(`URL_START:${url}`)
 	return res.status(status).send(html);
 })

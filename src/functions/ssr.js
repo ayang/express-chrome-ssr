@@ -43,7 +43,7 @@ const skippedResources = [
  *     provided, Puppeteer's reconnects to the browser instance. Otherwise,
  *     a new browser instance is launched.
  */
-export async function ssr(url, browserWSEndpoint, screenSize) {
+export async function ssr(url, browserWSEndpoint, {screenSize, waitMs=1000}) {
 
 	const browser = await puppeteer.connect({ browserWSEndpoint });
 
@@ -77,7 +77,7 @@ export async function ssr(url, browserWSEndpoint, screenSize) {
 				timeout: 25000,
 				waitUntil: 'networkidle0'
 			});
-			await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+			await new Promise((resolve, reject) => setTimeout(resolve, waitMs));
 
 			// Inject <base> on page to relative resources load properly.
 			await page.evaluate(url => {
