@@ -10,9 +10,17 @@ const app = express();
 
 const params = commandLineArgs([
 	{ name: 'port', alias: 'p', type: Number },
+	{ name: 'datadir', type: String },
 ])
 
+console.log(process.argv)
+
 const port = params.port || 3000;
+const datadir = params.datadir || null;
+const launchOptions = {};
+if (datadir) {
+	launchOptions.userDataDir = datadir;
+}
 app.listen(port, () => console.log(`I listen on http://localhost:${port}`))
 
 app.use((req, res, next) => {
@@ -35,7 +43,7 @@ app.get('/ssr', async (req, res, next) => {
 	// console.log(`browserWSEndpoint is::${(browserWSEndpoint)}`)
 	// Spin new instance if we dont have an active one
 	if (!browserWSEndpoint) {
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch(launchOptions);
 		browserWSEndpoint = await browser.wsEndpoint();
 	}
 

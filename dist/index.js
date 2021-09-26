@@ -22,8 +22,19 @@ var params = (0, _commandLineArgs["default"])([{
   name: 'port',
   alias: 'p',
   type: Number
+}, {
+  name: 'datadir',
+  type: String
 }]);
+console.log(process.argv);
 var port = params.port || 3000;
+var datadir = params.datadir || null;
+var launchOptions = {};
+
+if (datadir) {
+  launchOptions.userDataDir = datadir;
+}
+
 app.listen(port, function () {
   return console.log("I listen on http://localhost:".concat(port));
 });
@@ -35,13 +46,13 @@ app.get('/test', _test.test);
 var browserWSEndpoint = null;
 app.get('/ssr', /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var _req$query, url, _req$query$width, width, _req$query$height, height, browser, screenSize, _yield$ssr, html, status;
+    var _req$query, url, _req$query$width, width, _req$query$height, height, _req$query$waitms, waitms, browser, screenSize, _yield$ssr, html, status;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$query = req.query, url = _req$query.url, _req$query$width = _req$query.width, width = _req$query$width === void 0 ? 540 : _req$query$width, _req$query$height = _req$query.height, height = _req$query$height === void 0 ? 960 : _req$query$height;
+            _req$query = req.query, url = _req$query.url, _req$query$width = _req$query.width, width = _req$query$width === void 0 ? 540 : _req$query$width, _req$query$height = _req$query.height, height = _req$query$height === void 0 ? 960 : _req$query$height, _req$query$waitms = _req$query.waitms, waitms = _req$query$waitms === void 0 ? 2000 : _req$query$waitms;
 
             if (url) {
               _context.next = 3;
@@ -57,7 +68,7 @@ app.get('/ssr', /*#__PURE__*/function () {
             }
 
             _context.next = 6;
-            return _puppeteer["default"].launch();
+            return _puppeteer["default"].launch(launchOptions);
 
           case 6:
             browser = _context.sent;
@@ -73,7 +84,10 @@ app.get('/ssr', /*#__PURE__*/function () {
               height: height
             };
             _context.next = 13;
-            return (0, _ssr.ssr)(url, browserWSEndpoint, screenSize);
+            return (0, _ssr.ssr)(url, browserWSEndpoint, {
+              screenSize: screenSize,
+              waitMs: waitms
+            });
 
           case 13:
             _yield$ssr = _context.sent;

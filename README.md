@@ -48,7 +48,14 @@ $ npm run start_production_server (or yarn start_production_server)
 
 Specifying a port is optional, the default one is 3000
 ```sh
-$ yarn start_production_server --port=3000
+$ yarn start_production_server
+```
+
+Run by pm2
+```sh
+npm -g install pm2
+pm2 start ./dist/index.js -i 5 -n ssr -- --datadir=/data/dir --port=3000
+
 ```
 * Start the server (locally or on production)
 * Visit /ssr and add your url in the url param
