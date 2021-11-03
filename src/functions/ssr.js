@@ -60,17 +60,17 @@ export async function ssr(url, browserWSEndpoint, {screenSize, waitMs=1000}) {
 			});
 		}
 
-		page.on('request', request => {
-			const requestUrl = request._url.split('?')[0].split('#')[0];
-			if (
-				blockedResourceTypes.indexOf(request.resourceType()) !== -1 ||
-				skippedResources.some(resource => requestUrl.indexOf(resource) !== -1)
-			) {
-				request.abort();
-			} else {
-				request.continue();
-			}
-		})
+		// page.on('request', request => {
+		// 	const requestUrl = request._url.split('?')[0].split('#')[0];
+		// 	if (
+		// 		blockedResourceTypes.indexOf(request.resourceType()) !== -1 ||
+		// 		skippedResources.some(resource => requestUrl.indexOf(resource) !== -1)
+		// 	) {
+		// 		request.abort();
+		// 	} else {
+		// 		request.continue();
+		// 	}
+		// })
 
 		try {
 			const response = await page.goto(url, {
