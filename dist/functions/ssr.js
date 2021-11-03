@@ -17,7 +17,26 @@ var _puppeteer = _interopRequireDefault(require("puppeteer"));
 // Dont download all resources, we just need the HTML
 // Also, this is huge performance/response time boost
 var blockedResourceTypes = ['image', 'media', 'font', 'texttrack', 'object', 'beacon', 'csp_report', 'imageset'];
-var skippedResources = ['quantserve', 'adzerk', 'doubleclick', 'adition', 'exelator', 'sharethrough', 'cdn.api.twitter', 'google-analytics', 'googletagmanager', 'google', 'fontawesome', 'facebook', 'analytics', 'optimizely', 'clicktale', 'mixpanel', 'zedo', 'clicksor', 'tiqcdn'];
+var skippedResources = [// 'quantserve',
+  // 'adzerk',
+  // 'doubleclick',
+  // 'adition',
+  // 'exelator',
+  // 'sharethrough',
+  // 'cdn.api.twitter',
+  // 'google-analytics',
+  // 'googletagmanager',
+  // 'google',
+  // 'fontawesome',
+  // 'facebook',
+  // 'analytics',
+  // 'optimizely',
+  // 'clicktale',
+  // 'mixpanel',
+  // 'zedo',
+  // 'clicksor',
+  // 'tiqcdn',
+];
 /**
  * https://developers.google.com/web/tools/puppeteer/articles/ssr#reuseinstance
  * @param {string} url URL to prerender.
@@ -74,22 +93,33 @@ function _ssr() {
             });
 
           case 16:
-            _context.prev = 16;
-            _context.next = 19;
+            page.on('request', function (request) {
+              var requestUrl = request._url.split('?')[0].split('#')[0];
+
+              if (blockedResourceTypes.indexOf(request.resourceType()) !== -1 || skippedResources.some(function (resource) {
+                return requestUrl.indexOf(resource) !== -1;
+              })) {
+                request.abort();
+              } else {
+                request["continue"]();
+              }
+            });
+            _context.prev = 17;
+            _context.next = 20;
             return page["goto"](url, {
               timeout: 25000,
               waitUntil: 'networkidle0'
             });
 
-          case 19:
+          case 20:
             response = _context.sent;
-            _context.next = 22;
+            _context.next = 23;
             return new Promise(function (resolve, reject) {
               return setTimeout(resolve, waitMs);
             });
 
-          case 22:
-            _context.next = 24;
+          case 23:
+            _context.next = 25;
             return page.evaluate(function (url) {
               var base = document.createElement('base');
               base.href = url; // Add to top of head, before all other resources.
@@ -97,8 +127,8 @@ function _ssr() {
               document.head.prepend(base);
             }, url);
 
-          case 24:
-            _context.next = 26;
+          case 25:
+            _context.next = 27;
             return page.evaluate(function () {
               var elements = document.querySelectorAll('script, link[rel="import"]');
               elements.forEach(function (e) {
@@ -106,32 +136,32 @@ function _ssr() {
               });
             });
 
-          case 26:
-            _context.next = 28;
+          case 27:
+            _context.next = 29;
             return page.content();
 
-          case 28:
+          case 29:
             html = _context.sent;
             return _context.abrupt("return", {
               html: html,
               status: response.status()
             });
 
-          case 30:
-            _context.prev = 30;
-            _context.next = 33;
+          case 31:
+            _context.prev = 31;
+            _context.next = 34;
             return page.close();
 
-          case 33:
+          case 34:
             console.log('close page ' + url);
-            return _context.finish(30);
+            return _context.finish(31);
 
-          case 35:
-            _context.next = 42;
+          case 36:
+            _context.next = 43;
             break;
 
-          case 37:
-            _context.prev = 37;
+          case 38:
+            _context.prev = 38;
             _context.t0 = _context["catch"](4);
             _html = _context.t0.toString();
             console.warn({
@@ -142,17 +172,17 @@ function _ssr() {
               status: 500
             });
 
-          case 42:
-            _context.prev = 42;
+          case 43:
+            _context.prev = 43;
             browser.disconnect();
-            return _context.finish(42);
+            return _context.finish(43);
 
-          case 45:
+          case 46:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[4, 37, 42, 45], [16,, 30, 35]]);
+    }, _callee, null, [[4, 38, 43, 46], [17,, 31, 36]]);
   }));
   return _ssr.apply(this, arguments);
 }
