@@ -74,33 +74,22 @@ function _ssr() {
             });
 
           case 16:
-            page.on('request', function (request) {
-              var requestUrl = request._url.split('?')[0].split('#')[0];
-
-              if (blockedResourceTypes.indexOf(request.resourceType()) !== -1 || skippedResources.some(function (resource) {
-                return requestUrl.indexOf(resource) !== -1;
-              })) {
-                request.abort();
-              } else {
-                request["continue"]();
-              }
-            });
-            _context.prev = 17;
-            _context.next = 20;
+            _context.prev = 16;
+            _context.next = 19;
             return page["goto"](url, {
               timeout: 25000,
               waitUntil: 'networkidle0'
             });
 
-          case 20:
+          case 19:
             response = _context.sent;
-            _context.next = 23;
+            _context.next = 22;
             return new Promise(function (resolve, reject) {
               return setTimeout(resolve, waitMs);
             });
 
-          case 23:
-            _context.next = 25;
+          case 22:
+            _context.next = 24;
             return page.evaluate(function (url) {
               var base = document.createElement('base');
               base.href = url; // Add to top of head, before all other resources.
@@ -108,8 +97,8 @@ function _ssr() {
               document.head.prepend(base);
             }, url);
 
-          case 25:
-            _context.next = 27;
+          case 24:
+            _context.next = 26;
             return page.evaluate(function () {
               var elements = document.querySelectorAll('script, link[rel="import"]');
               elements.forEach(function (e) {
@@ -117,32 +106,32 @@ function _ssr() {
               });
             });
 
-          case 27:
-            _context.next = 29;
+          case 26:
+            _context.next = 28;
             return page.content();
 
-          case 29:
+          case 28:
             html = _context.sent;
             return _context.abrupt("return", {
               html: html,
               status: response.status()
             });
 
-          case 31:
-            _context.prev = 31;
-            _context.next = 34;
+          case 30:
+            _context.prev = 30;
+            _context.next = 33;
             return page.close();
 
-          case 34:
+          case 33:
             console.log('close page ' + url);
-            return _context.finish(31);
+            return _context.finish(30);
 
-          case 36:
-            _context.next = 43;
+          case 35:
+            _context.next = 42;
             break;
 
-          case 38:
-            _context.prev = 38;
+          case 37:
+            _context.prev = 37;
             _context.t0 = _context["catch"](4);
             _html = _context.t0.toString();
             console.warn({
@@ -153,17 +142,17 @@ function _ssr() {
               status: 500
             });
 
-          case 43:
-            _context.prev = 43;
+          case 42:
+            _context.prev = 42;
             browser.disconnect();
-            return _context.finish(43);
+            return _context.finish(42);
 
-          case 46:
+          case 45:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[4, 38, 43, 46], [17,, 31, 36]]);
+    }, _callee, null, [[4, 37, 42, 45], [16,, 30, 35]]);
   }));
   return _ssr.apply(this, arguments);
 }
