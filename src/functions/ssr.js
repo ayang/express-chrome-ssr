@@ -61,7 +61,8 @@ export async function ssr(url, browserWSEndpoint, {screenSize, waitMs=1000}) {
 		}
 
 		page.on('request', request => {
-			const requestUrl = request._url.split('?')[0].split('#')[0];
+			// console.log(request.url());
+			const requestUrl = request.url().split('?')[0].split('#')[0];
 			if (
 				blockedResourceTypes.indexOf(request.resourceType()) !== -1 ||
 				skippedResources.some(resource => requestUrl.indexOf(resource) !== -1)
